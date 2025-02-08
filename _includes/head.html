@@ -1,4 +1,3 @@
-
 <!-- Site build date: {{ "now" | date: "%FT%T%z" }} -->
 <head>
   <meta charset="utf-8">
@@ -9,8 +8,8 @@
   {% seo %}
   <!-- End SEO -->
 
-  <link rel="stylesheet" href="{{ "/nrhevublog/assets/main.css" | relative_url }}">
-  <link rel="stylesheet" type="text/css" href="/nrhevublog/css/override.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/main.css">
+  <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/css/override.css">
 
   {% feed_meta %}
 
@@ -21,15 +20,13 @@
   {%- endif %}
 
   <!-- Begin highlight.js support -->
-  <link rel="stylesheet" href="/nrhevublog/js/highlightjs/styles/github.css">
-  <link rel="stylesheet" href="/nrhevublog/js/highlightjs/styles/ssms.css" />
+  <link rel="stylesheet" href="{{ site.baseurl }}/js/highlightjs/styles/github.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/js/highlightjs/styles/ssms.css" />
 
-  <script type="text/javascript" src="/nrhevublog/js/highlightjs/highlight.min.js"></script>
+  <script type="text/javascript" src="{{ site.baseurl }}/js/highlightjs/highlight.min.js"></script>
 
-  <script type="text/javascript" src="/nrhevublog/js/highlightjs/languages/plaintext.min.js"></script>
-  <script type="text/javascript" src="/nrhevublog/js/highlightjs/languages/powershell.min.js"></script>
-  <script type="text/javascript" src="/nrhevublog/js/highlightjs/languages/tsql.min.js"></script>
+  <script type="text/javascript" src="{{ site.baseurl }}/js/highlightjs/languages/plaintext.min.js"></script>
+  <script type="text/javascript" src="{{ site.baseurl }}/js/highlightjs/languages/powershell.min.js"></script>
+  <script type="text/javascript" src="{{ site.baseurl }}/js/highlightjs/languages/tsql.min.js"></script>
 
   <script type="text/javascript"> hljs.highlightAll(); </script>
-  <!-- end highlight.js support -->
-</head>
