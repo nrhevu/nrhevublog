@@ -6,7 +6,7 @@ RAG là một kỹ thuật giúp cải thiện câu trả lời của các mô h
 
 Cách thức hoạt động có thể được mô tả như sau:
 
-![alt text](_images/2025-02-09-cache-augmented-generation/rag.png)
+![alt text](/nrhevublog/_images/2025-02-09-cache-augmented-generation/rag.png)
 
 - Đầu tiên, bộ 
 
