@@ -4,7 +4,9 @@
 ## RAG là gì
 RAG là một kỹ thuật giúp cải thiện câu trả lời của các mô hình ngôn ngữ lớn, giảm thiểu tình trạng ảo giác (halluciation) bằng cách thêm những thông tin văn bản liên quan đến câu đầu vào từ một kho văn bản lớn bằng các kỹ thuật tìm kiếm.
 
+Cách thức hoạt động có thể được mô tả như sau:
 
+![alt text](../_images/2025-09-02-cache-augmented-generation/rag.png)
 
 ## CAG là gì
 
