@@ -1,3 +1,11 @@
+---
+layout: post
+title: "Working with secure FTP in PowerShell"
+description: "Recently learned a new way to work with secure FTP in PowerShell"
+date: 2021-11-01T07:00:00-07:00
+tags: PowerShell
+---
+
 # Sơ lược về Cache-Augmented Generation (CAG)
 Để xây dựng một hệ thống ứng dụng **Large Language Model**, chắc hẳn chúng ta sẽ phải áp dụng một vài kỹ thuật để tăng cường khả năng của mô hình, điển hình nhất là sử dụng những kỹ thuật về tăng cường truy xuất (**Retrieval Augmented Generation**). 
 
