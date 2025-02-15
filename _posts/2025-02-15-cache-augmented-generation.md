@@ -45,12 +45,14 @@ Self-attention là một kỹ thuật siêu nổi tiếng trong lĩnh vực họ
 Giải thích theo góc nhìn toán học thì mục tiêu của self-attention sẽ là biến đổi token đầu vào thành context vector mà có thông tin của tất cả các token khác. Ví dụ như cụm từ "she poured coffee" thì mô hình sẽ phải tính toán ra 3 context vector tương ứng với các token (coi mỗi token là 1 từ). 
 
 Giá trị Attention sẽ được tính bằng công thức sau:
-$$ Attention(Q,W,K) = softmax(\frac{QK^T}{\sqrt{d_k}})V $$
+$$ 
+Attention(Q,W,K) = softmax(\frac{QK^T}{\sqrt{d_k}})V 
+$$
 Để giải thích công thức này một cách trực quan và dễ hiểu, ta sẽ đi vào 1 ví dụ: Trong hình bên dưới khi từ "poured" được xử lý, các bước sau sẽ được thực hiện:
 
 ![alt text](/nrhevublog/images/2025-02-09-cache-augmented-generation/attention.png)
 
-- Đầu tiên, mỗi token đầu vào sẽ được nhân độc lập với các ma trận Key và Value $W_k$ và $W_v$ để ra được giá trị ma trận $K$ và $V$. Ngoài ra, token đang được xử lý để tìm ra context vector sẽ được nhân với ma trận $W_q$. Đầu ra của bước này sẽ là các vector keys (k), values (v) với toàn bộ token trong đầu vào và vector query (q) cho token đang được xử lý. Các ma trận $W_q$, $W_k$, $W_v$ đều là trọng số mạng nơ ron được khởi tạo ngẫu nhiên và được tối ưu qua quá trình huấn luyện.
+- Đầu tiên, mỗi token đầu vào sẽ được nhân độc lập với các ma trận Key và Value \(W_k\) và $W_v$ để ra được giá trị ma trận $K$ và $V$. Ngoài ra, token đang được xử lý để tìm ra context vector sẽ được nhân với ma trận $W_q$. Đầu ra của bước này sẽ là các vector keys (k), values (v) với toàn bộ token trong đầu vào và vector query (q) cho token đang được xử lý. Các ma trận $W_q$, $W_k$, $W_v$ đều là trọng số mạng nơ ron được khởi tạo ngẫu nhiên và được tối ưu qua quá trình huấn luyện.
 - Tiếp theo, giá trị Attention sẽ được tính toán với công thức trên, 2 vector key và query sẽ được nhân với nhau rồi được normalized để tạo ra attention weights. Trong ví dụ này, a21 là một attention weight giữa từ "she" và "poured".
 - Cuối cùng, mỗi attention weight nhân với value vector tương ứng. Sau đó các vector riêng lẻ sẽ được cộng vòa thành context vector z. Trong ví dụ này, z2 sẽ tương ứng với từ đầu vào x2 "poured". 
 
@@ -66,16 +68,22 @@ Như đã trình bày ở trên, CAG sử dụng năng lực của extented cont
 
 #### 1. External Knowledge Preloading
 Trong giai đoạn này, toàn bộ tập văn bản $\cal{D}$ có liên quan đến ứng dụng thực thế sẽ được tiền xử lý và điều chỉnh lại để có thể vừa với context window của mô hình. Mô hình LLM $\cal{M}$, bộ tham số $\theta$ sẽ xử lý $\cal{D}$ và biến đổi nó thành KV cache rồi được lưu trên ram hoặc đĩa để sử dụng sau. Quá trình tính này chỉ thực hiện 1 lần nênn không làm ảnh hưởng đến chi phí tính toán:
-$$ C_{KV} = \text{KV-Encode}(\cal{D}) $$
+$$ 
+C_{KV} = \text{KV-Encode}(\cal{D}) 
+$$
 
 #### 2. Inference
 Trong quá trình suy luận, KV cache $C_{KV}$ được tính toán trước sẽ được tải lên cùng với query của user $Q$. LLM sẽ sử dụng cache để tạo ra response:
-$$ \cal{R} = \cal{M}(\text{Q}|C_{KV})$$
+$$ 
+\cal{R} = \cal{M}(\text{Q}|C_{KV})
+$$
 Bằng cách preloading hết toàn bộ tri thức ngoài, quá trình này loại bỏ độ trễ của việc retrieval và giảm thiểu lỗi trong quá trình tìm kiếm. Cách này cũng như prompt kết hợp $P=\text{Concat}(D, Q)$, đảm bảo rằng mô hình hiểu được cả query của user cũng như tri thức bên ngoài
 
 #### 3. Cache Reset
 Qua các phiên làm việc, KV cache sẽ được cập nhật thêm các token trong câu hỏi của người dùng vào và lưu trữ thống nhất, tránh việc phải load cả KV cache từ ổ đĩa nhiều lần, đảm bảo tốc độ tính toán. Tuy nhiên việc này theo thời gian sẽ làm mô hình bị nhầm lẫn thông tin nên sau một vài phiên sẽ phải tái tạo lại KV cache ban đầu chỉ bằng cách loại bỏ những token đã thêm vào, đơn giản phải không:
-$$C_{KV}^{reset} =  \text{Truncate}(C_{KV}, t_1, t_2, ..., t_k)$$
+$$
+C_{KV}^{reset} =  \text{Truncate}(C_{KV}, t_1, t_2, ..., t_k)
+$$
 
 
 ## Lợi ích và hạn chế của CAG
